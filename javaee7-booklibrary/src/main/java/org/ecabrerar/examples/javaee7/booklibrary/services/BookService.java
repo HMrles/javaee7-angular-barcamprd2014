@@ -43,8 +43,19 @@ public class BookService {
 
         return book;
     }
+    
+        public Book editBook(Book book) {
 
-    public void deleteBook(String id) {
+        if (book == null) {
+            throw new ValidationException("Book object is null");
+        }
+
+        entityManager.merge(book);
+
+        return book;
+    }
+
+    public void deleteBook(Integer id) {
         
         if (id == null) {
             throw new ValidationException("Invalid book id");
@@ -53,7 +64,7 @@ public class BookService {
         entityManager.remove(findBook(id));
     }
 
-    public Book getBook(String id) {
+    public Book getBook(Integer id) {
 
         if (id == null) {
             throw new ValidationException("Invalid book id");
@@ -63,13 +74,13 @@ public class BookService {
 
     }
     
-    private Book findBook(String id){
+    private Book findBook(Integer id){
         
         if (id == null) {
             throw new ValidationException("Invalid book id");
         }
         
-         return entityManager.find(Book.class, Integer.parseInt(id));        
+         return entityManager.find(Book.class, id);        
     }
     
     public List<Book> findAllBooks(){
